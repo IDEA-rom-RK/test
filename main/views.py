@@ -4,6 +4,9 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 
+def base(request):
+    return render(request, "base.html")
+
 def home(request):
     return render(request, "HBase.html")
 

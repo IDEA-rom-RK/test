@@ -1,14 +1,11 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Вход</title>
-</head>
-<body>
+{% block title %}Вход — OkItIsIDEA{% endblock %}
+
+{% block content %}
     <h1>Вход в аккаунт</h1>
 
-```
+
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
@@ -20,8 +17,6 @@
     <a href="{% url 'Register' %}">Зарегистрироваться</a>
 </p>
 
-<a href="{% url 'HBase' %}">На главную</a>
-```
-
+{%   endblock %}
 </body>
 </html>

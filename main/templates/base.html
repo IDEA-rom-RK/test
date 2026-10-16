@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}OkItIsIDEA{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <a class="logo" href="{% url 'base' %}">OkItIsIDEA</a>
+
+        <nav>
+            <a href="{% url 'HBase' %}">Главная</a>
+            <a href="{% url 'Register' %}">Регистрация</a>
+            <a href="{% url 'log' %}">Вход</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>OkItIsIDEA © 2026</p>
+    </footer>
+</body>
+</html>
