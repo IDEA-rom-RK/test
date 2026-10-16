@@ -7,7 +7,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: #f4f6fa;
-    color: #222;
+    color: #bf1818;
 }
 
 .site-header {
@@ -16,7 +16,7 @@ body {
     align-items: center;
     gap: 20px;
     padding: 20px 8%;
-    background: white;
+    background: rgb(18, 18, 18);
     border-bottom: 1px solid #ddd;
 }
 
@@ -62,7 +62,7 @@ nav a {
     display: inline-block;
     padding: 12px 20px;
     border-radius: 8px;
-    background: #5f6a83;
+    background: #2457c5;
     color: white;
     text-decoration: none;
 }
