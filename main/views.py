@@ -35,3 +35,7 @@ def login_view(request):
         form = AuthenticationForm(request)
 
     return render(request, "log.html", {"form": form})
+
+
+def profile_view(request):
+    return render(request, "profile.html")

@@ -11,11 +11,24 @@
     <header class="site-header">
         <a class="logo" href="{% url 'base' %}">OkItIsIDEA</a>
 
-        <nav>
-            <a href="{% url 'HBase' %}">Главная</a>
+    
+    <nav>
+        <a href="{% url 'HBase' %}">Главная</a>
+
+        {% if user.is_authenticated %}
+            <span>Привет, {{ user.username }}!</span>
+
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Выйти</button>
+            </form>
+            
+        {% else %}
             <a href="{% url 'Register' %}">Регистрация</a>
             <a href="{% url 'log' %}">Вход</a>
-        </nav>
+        {% endif %}
+    </nav>
+
     </header>
 
     <main class="container">
