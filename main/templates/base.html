@@ -14,21 +14,13 @@
     
     <nav>
         <a href="{% url 'HBase' %}">Главная</a>
-
-        {% if user.is_authenticated %}
-            <span>Привет, {{ user.username }}!</span>
-
-            <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Выйти</button>
-            </form>
-            
-        {% else %}
-            <a href="{% url 'Register' %}">Регистрация</a>
-            <a href="{% url 'log' %}">Вход</a>
-        {% endif %}
+        <a href="{% url 'profile' %}" class="profile-button">
+            <span class="person-icon">
+                <span class="person-head"></span>
+                <span class="person-body"></span>
+            </span>
+        </a>
     </nav>
-
     </header>
 
     <main class="container">

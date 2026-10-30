@@ -3,5 +3,14 @@
 {% block title %}Профиль — OkItIsIDEA{% endblock %}
 
 {% block content %}
-    <h1>Hi, {{% username %}}, it is your Profile!</h1>
+    {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Выйти</button>
+        </form>
+    {% else %}
+        <span>Нету аккаунта, так создайте!</span> <br>
+        <a href="{% url 'Register' %}">Регистрация</a>
+        <a href="{% url 'log' %}">Вход</a>
+    {% endif %}
 {% endblock %}
