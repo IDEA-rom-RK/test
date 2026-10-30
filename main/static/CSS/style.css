@@ -67,6 +67,22 @@ nav a {
     text-decoration: none;
 }
 
+.logout-button {
+    padding: 10px 20px;
+    border: 1px solid #d9534f;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #d9534f;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.logout-button:hover {
+    background-color: #d9534f;
+    color: white;
+}
+
 .button-secondary {
     background: #e5eaf5;
     color: #222;

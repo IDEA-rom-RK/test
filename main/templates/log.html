@@ -1,24 +1,32 @@
-{% extends "base.html" %}
-{% load static %}
 
+{% extends "base.html" %}
 
 {% block title %}Вход — OkItIsIDEA{% endblock %}
 
 {% block content %}
+
     <h1>Вход в аккаунт</h1>
 
+    <form method="post">
+        {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+            {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+        {{ form.as_p }}
+            {% if form.errors %}
+                <p class="form-error-message">
+                    Проверьте выделенные поля.
+                </p>
+            {% endif %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
+        <button type="submit">Войти</button>
+    </form>
 
-    <button type="submit">Войти</button>
-</form>
+    <p>
+        Нет аккаунта?
+        <a href="{% url 'Register' %}">Зарегистрироваться</a>
+    </p>
 
-<p>Нет аккаунта?
-    <a href="{% url 'Register' %}">Зарегистрироваться</a>
-</p>
-
-{%   endblock %}
-</body>
-</html>
+{% endblock %}

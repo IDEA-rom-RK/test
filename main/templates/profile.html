@@ -3,14 +3,189 @@
 {% block title %}Профиль — OkItIsIDEA{% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <form action="{% url 'logout' %}" method="POST">
-            {% csrf_token %}
-            <button type="submit">Выйти</button>
-        </form>
-    {% else %}
-        <span>Нету аккаунта, так создайте!</span> <br>
-        <a href="{% url 'Register' %}">Регистрация</a>
-        <a href="{% url 'log' %}">Вход</a>
-    {% endif %}
+
+    <div class="profile-container">
+
+        <h1>Мой профиль</h1>
+
+        <!-- Основная информация -->
+        <section class="profile-header">
+
+            <div class="avatar-container">
+                <label for="avatar-input" class="avatar">
+
+                    <div class="default-avatar">
+                        <div class="avatar-head"></div>
+                        <div class="avatar-body"></div>
+                    </div>
+
+                    <div class="avatar-overlay">
+                        <span>📷</span>
+                        <p>Установить фото</p>
+                    </div>
+
+                </label>
+
+                <input
+                    type="file"
+                    id="avatar-input"
+                    name="avatar"
+                    accept="image/*"
+                    hidden
+                >
+            </div>
+
+            <div class="profile-info">
+                <h2>{{ user.username }}</h2>
+
+                <textarea
+                    name="description"
+                    placeholder="Расскажи немного о себе..."
+                ></textarea>
+            </div>
+
+        </section>
+
+
+        <!-- Интересы -->
+        <section class="profile-section">
+
+            <h2>Интересы</h2>
+
+            <div class="interest-grid">
+
+                <!-- Игры -->
+                <details class="interest-category">
+                    <summary>Игры</summary>
+
+                    <label><input type="checkbox" name="interests" value="game_shooter"> Шутеры</label>
+                    <label><input type="checkbox" name="interests" value="game_strategy"> Стратегии</label>
+                    <label><input type="checkbox" name="interests" value="game_rpg"> RPG</label>
+                    <label><input type="checkbox" name="interests" value="game_survival"> Выживание</label>
+                    <label><input type="checkbox" name="interests" value="game_simulator"> Симуляторы</label>
+                    <label><input type="checkbox" name="interests" value="game_sandbox"> Песочницы</label>
+                </details>
+
+                <!-- Книги -->
+                <details class="interest-category">
+                    <summary>Книги</summary>
+
+                    <label><input type="checkbox" name="interests" value="book_fantasy"> Фантастика</label>
+                    <label><input type="checkbox" name="interests" value="book_detective"> Детективы</label>
+                    <label><input type="checkbox" name="interests" value="book_classic"> Классика</label>
+                    <label><input type="checkbox" name="interests" value="book_romance"> Романтика</label>
+                    <label><input type="checkbox" name="interests" value="book_history"> Исторические</label>
+                </details>
+
+                <!-- Фильмы -->
+                <details class="interest-category">
+                    <summary>Фильмы и сериалы</summary>
+
+                    <label><input type="checkbox" name="interests" value="film_action"> Боевики</label>
+                    <label><input type="checkbox" name="interests" value="film_comedy"> Комедии</label>
+                    <label><input type="checkbox" name="interests" value="film_drama"> Драмы</label>
+                    <label><input type="checkbox" name="interests" value="film_horror"> Ужасы</label>
+                    <label><input type="checkbox" name="interests" value="film_scifi"> Фантастика</label>
+                </details>
+
+                <!-- Музыка -->
+                <details class="interest-category">
+                    <summary>Музыка</summary>
+
+                    <label><input type="checkbox" name="interests" value="music_rock"> Рок</label>
+                    <label><input type="checkbox" name="interests" value="music_pop"> Поп</label>
+                    <label><input type="checkbox" name="interests" value="music_metal"> Метал</label>
+                    <label><input type="checkbox" name="interests" value="music_classical"> Классическая</label>
+                    <label><input type="checkbox" name="interests" value="music_electronic"> Электронная</label>
+                </details>
+
+                <!-- Спорт -->
+                <details class="interest-category">
+                    <summary>Спорт</summary>
+
+                    <label><input type="checkbox" name="interests" value="sport_football"> Футбол</label>
+                    <label><input type="checkbox" name="interests" value="sport_basketball"> Баскетбол</label>
+                    <label><input type="checkbox" name="interests" value="sport_swimming"> Плавание</label>
+                    <label><input type="checkbox" name="interests" value="sport_running"> Бег</label>
+                    <label><input type="checkbox" name="interests" value="sport_other"> Другое</label>
+                </details>
+
+                <!-- Творчество -->
+                <details class="interest-category">
+                    <summary>Творчество</summary>
+
+                    <label><input type="checkbox" name="interests" value="creative_drawing"> Рисование</label>
+                    <label><input type="checkbox" name="interests" value="creative_animation"> Анимация</label>
+                    <label><input type="checkbox" name="interests" value="creative_music"> Музыка</label>
+                    <label><input type="checkbox" name="interests" value="creative_writing"> Писательство</label>
+                    <label><input type="checkbox" name="interests" value="creative_video"> Видеомонтаж</label>
+                </details>
+
+                <!-- Другое -->
+                <details class="interest-category">
+                    <summary>Другое</summary>
+
+                    <textarea
+                        name="other_interests"
+                        placeholder="Напиши о других интересах..."
+                    ></textarea>
+                </details>
+
+            </div>
+
+        </section>
+
+
+        <!-- Цели поиска -->
+        <section class="profile-section">
+
+            <h2>Цель поиска</h2>
+
+            <div class="choice-list">
+
+                <label><input type="checkbox" name="search_goals" value="gaming"> Совместная игра</label>
+
+                <label><input type="checkbox" name="search_goals" value="books"> Обсуждение книг</label>
+
+                <label><input type="checkbox" name="search_goals" value="movies"> Обсуждение кино и сериалов</label>
+
+                <label><input type="checkbox" name="search_goals" value="creativity"> Совместное занятие творчеством</label>
+
+                <label><input type="checkbox" name="search_goals" value="communication"> Простое общение</label>
+
+                <label><input type="checkbox" name="search_goals" value="similar_interests"> Люди с похожими интересами</label>
+
+            </div>
+
+        </section>
+
+
+        <!-- Что важно -->
+        <section class="profile-section">
+
+            <h2>Что важно</h2>
+
+            <div class="choice-list">
+
+                <label><input type="checkbox" name="important" value="common_hobbies"> Общие хобби</label>
+
+                <label><input type="checkbox" name="important" value="same_age"> Одинаковый возраст</label>
+
+            </div>
+
+        </section>
+
+
+        <button type="submit" class="save-profile">
+            Сохранить профиль
+        </button>
+
+    </div>
+
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="logout-button">
+            Выйти из аккаунта
+        </button>
+    </form>
 {% endblock %}
