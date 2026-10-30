@@ -1,12 +1,16 @@
+
 {% extends "base.html" %}
 
 {% block title %}Профиль — OkItIsIDEA{% endblock %}
 
 {% block content %}
 
-    <div class="profile-container">
+<div class="profile-container">
 
-        <h1>Мой профиль</h1>
+    <h1>Мой профиль</h1>
+
+    <form method="post" action="{% url 'profile' %}">
+        {% csrf_token %}
 
         <!-- Основная информация -->
         <section class="profile-header">
@@ -41,7 +45,7 @@
                 <textarea
                     name="description"
                     placeholder="Расскажи немного о себе..."
-                ></textarea>
+                >{{ profile.description }}</textarea>
             </div>
 
         </section>
@@ -58,68 +62,223 @@
                 <details class="interest-category">
                     <summary>Игры</summary>
 
-                    <label><input type="checkbox" name="interests" value="game_shooter"> Шутеры</label>
-                    <label><input type="checkbox" name="interests" value="game_strategy"> Стратегии</label>
-                    <label><input type="checkbox" name="interests" value="game_rpg"> RPG</label>
-                    <label><input type="checkbox" name="interests" value="game_survival"> Выживание</label>
-                    <label><input type="checkbox" name="interests" value="game_simulator"> Симуляторы</label>
-                    <label><input type="checkbox" name="interests" value="game_sandbox"> Песочницы</label>
+                    <label>
+                        <input type="checkbox" name="interests" value="game_shooter"
+                        {% if "game_shooter" in selected_interests %}checked{% endif %}>
+                        Шутеры
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="game_strategy"
+                        {% if "game_strategy" in selected_interests %}checked{% endif %}>
+                        Стратегии
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="game_rpg"
+                        {% if "game_rpg" in selected_interests %}checked{% endif %}>
+                        RPG
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="game_survival"
+                        {% if "game_survival" in selected_interests %}checked{% endif %}>
+                        Выживание
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="game_simulator"
+                        {% if "game_simulator" in selected_interests %}checked{% endif %}>
+                        Симуляторы
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="game_sandbox"
+                        {% if "game_sandbox" in selected_interests %}checked{% endif %}>
+                        Песочницы
+                    </label>
                 </details>
+
 
                 <!-- Книги -->
                 <details class="interest-category">
                     <summary>Книги</summary>
 
-                    <label><input type="checkbox" name="interests" value="book_fantasy"> Фантастика</label>
-                    <label><input type="checkbox" name="interests" value="book_detective"> Детективы</label>
-                    <label><input type="checkbox" name="interests" value="book_classic"> Классика</label>
-                    <label><input type="checkbox" name="interests" value="book_romance"> Романтика</label>
-                    <label><input type="checkbox" name="interests" value="book_history"> Исторические</label>
+                    <label>
+                        <input type="checkbox" name="interests" value="book_fantasy"
+                        {% if "book_fantasy" in selected_interests %}checked{% endif %}>
+                        Фантастика
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="book_detective"
+                        {% if "book_detective" in selected_interests %}checked{% endif %}>
+                        Детективы
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="book_classic"
+                        {% if "book_classic" in selected_interests %}checked{% endif %}>
+                        Классика
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="book_romance"
+                        {% if "book_romance" in selected_interests %}checked{% endif %}>
+                        Романтика
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="book_history"
+                        {% if "book_history" in selected_interests %}checked{% endif %}>
+                        Исторические
+                    </label>
                 </details>
+
 
                 <!-- Фильмы -->
                 <details class="interest-category">
                     <summary>Фильмы и сериалы</summary>
 
-                    <label><input type="checkbox" name="interests" value="film_action"> Боевики</label>
-                    <label><input type="checkbox" name="interests" value="film_comedy"> Комедии</label>
-                    <label><input type="checkbox" name="interests" value="film_drama"> Драмы</label>
-                    <label><input type="checkbox" name="interests" value="film_horror"> Ужасы</label>
-                    <label><input type="checkbox" name="interests" value="film_scifi"> Фантастика</label>
+                    <label>
+                        <input type="checkbox" name="interests" value="film_action"
+                        {% if "film_action" in selected_interests %}checked{% endif %}>
+                        Боевики
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="film_comedy"
+                        {% if "film_comedy" in selected_interests %}checked{% endif %}>
+                        Комедии
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="film_drama"
+                        {% if "film_drama" in selected_interests %}checked{% endif %}>
+                        Драмы
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="film_horror"
+                        {% if "film_horror" in selected_interests %}checked{% endif %}>
+                        Ужасы
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="film_scifi"
+                        {% if "film_scifi" in selected_interests %}checked{% endif %}>
+                        Фантастика
+                    </label>
                 </details>
+
 
                 <!-- Музыка -->
                 <details class="interest-category">
                     <summary>Музыка</summary>
 
-                    <label><input type="checkbox" name="interests" value="music_rock"> Рок</label>
-                    <label><input type="checkbox" name="interests" value="music_pop"> Поп</label>
-                    <label><input type="checkbox" name="interests" value="music_metal"> Метал</label>
-                    <label><input type="checkbox" name="interests" value="music_classical"> Классическая</label>
-                    <label><input type="checkbox" name="interests" value="music_electronic"> Электронная</label>
+                    <label>
+                        <input type="checkbox" name="interests" value="music_rock"
+                        {% if "music_rock" in selected_interests %}checked{% endif %}>
+                        Рок
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="music_pop"
+                        {% if "music_pop" in selected_interests %}checked{% endif %}>
+                        Поп
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="music_metal"
+                        {% if "music_metal" in selected_interests %}checked{% endif %}>
+                        Метал
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="music_classical"
+                        {% if "music_classical" in selected_interests %}checked{% endif %}>
+                        Классическая
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="music_electronic"
+                        {% if "music_electronic" in selected_interests %}checked{% endif %}>
+                        Электронная
+                    </label>
                 </details>
+
 
                 <!-- Спорт -->
                 <details class="interest-category">
                     <summary>Спорт</summary>
 
-                    <label><input type="checkbox" name="interests" value="sport_football"> Футбол</label>
-                    <label><input type="checkbox" name="interests" value="sport_basketball"> Баскетбол</label>
-                    <label><input type="checkbox" name="interests" value="sport_swimming"> Плавание</label>
-                    <label><input type="checkbox" name="interests" value="sport_running"> Бег</label>
-                    <label><input type="checkbox" name="interests" value="sport_other"> Другое</label>
+                    <label>
+                        <input type="checkbox" name="interests" value="sport_football"
+                        {% if "sport_football" in selected_interests %}checked{% endif %}>
+                        Футбол
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="sport_basketball"
+                        {% if "sport_basketball" in selected_interests %}checked{% endif %}>
+                        Баскетбол
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="sport_swimming"
+                        {% if "sport_swimming" in selected_interests %}checked{% endif %}>
+                        Плавание
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="sport_running"
+                        {% if "sport_running" in selected_interests %}checked{% endif %}>
+                        Бег
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="sport_other"
+                        {% if "sport_other" in selected_interests %}checked{% endif %}>
+                        Другое
+                    </label>
                 </details>
+
 
                 <!-- Творчество -->
                 <details class="interest-category">
                     <summary>Творчество</summary>
 
-                    <label><input type="checkbox" name="interests" value="creative_drawing"> Рисование</label>
-                    <label><input type="checkbox" name="interests" value="creative_animation"> Анимация</label>
-                    <label><input type="checkbox" name="interests" value="creative_music"> Музыка</label>
-                    <label><input type="checkbox" name="interests" value="creative_writing"> Писательство</label>
-                    <label><input type="checkbox" name="interests" value="creative_video"> Видеомонтаж</label>
+                    <label>
+                        <input type="checkbox" name="interests" value="creative_drawing"
+                        {% if "creative_drawing" in selected_interests %}checked{% endif %}>
+                        Рисование
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="creative_animation"
+                        {% if "creative_animation" in selected_interests %}checked{% endif %}>
+                        Анимация
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="creative_music"
+                        {% if "creative_music" in selected_interests %}checked{% endif %}>
+                        Музыка
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="creative_writing"
+                        {% if "creative_writing" in selected_interests %}checked{% endif %}>
+                        Писательство
+                    </label>
+
+                    <label>
+                        <input type="checkbox" name="interests" value="creative_video"
+                        {% if "creative_video" in selected_interests %}checked{% endif %}>
+                        Видеомонтаж
+                    </label>
                 </details>
+
 
                 <!-- Другое -->
                 <details class="interest-category">
@@ -128,7 +287,7 @@
                     <textarea
                         name="other_interests"
                         placeholder="Напиши о других интересах..."
-                    ></textarea>
+                    >{{ profile.other_interests }}</textarea>
                 </details>
 
             </div>
@@ -143,17 +302,41 @@
 
             <div class="choice-list">
 
-                <label><input type="checkbox" name="search_goals" value="gaming"> Совместная игра</label>
+                <label>
+                    <input type="checkbox" name="search_goals" value="gaming"
+                    {% if "gaming" in selected_goals %}checked{% endif %}>
+                    Совместная игра
+                </label>
 
-                <label><input type="checkbox" name="search_goals" value="books"> Обсуждение книг</label>
+                <label>
+                    <input type="checkbox" name="search_goals" value="books"
+                    {% if "books" in selected_goals %}checked{% endif %}>
+                    Обсуждение книг
+                </label>
 
-                <label><input type="checkbox" name="search_goals" value="movies"> Обсуждение кино и сериалов</label>
+                <label>
+                    <input type="checkbox" name="search_goals" value="movies"
+                    {% if "movies" in selected_goals %}checked{% endif %}>
+                    Обсуждение кино и сериалов
+                </label>
 
-                <label><input type="checkbox" name="search_goals" value="creativity"> Совместное занятие творчеством</label>
+                <label>
+                    <input type="checkbox" name="search_goals" value="creativity"
+                    {% if "creativity" in selected_goals %}checked{% endif %}>
+                    Совместное занятие творчеством
+                </label>
 
-                <label><input type="checkbox" name="search_goals" value="communication"> Простое общение</label>
+                <label>
+                    <input type="checkbox" name="search_goals" value="communication"
+                    {% if "communication" in selected_goals %}checked{% endif %}>
+                    Простое общение
+                </label>
 
-                <label><input type="checkbox" name="search_goals" value="similar_interests"> Люди с похожими интересами</label>
+                <label>
+                    <input type="checkbox" name="search_goals" value="similar_interests"
+                    {% if "similar_interests" in selected_goals %}checked{% endif %}>
+                    Люди с похожими интересами
+                </label>
 
             </div>
 
@@ -167,9 +350,17 @@
 
             <div class="choice-list">
 
-                <label><input type="checkbox" name="important" value="common_hobbies"> Общие хобби</label>
+                <label>
+                    <input type="checkbox" name="important" value="common_hobbies"
+                    {% if "common_hobbies" in selected_important %}checked{% endif %}>
+                    Общие хобби
+                </label>
 
-                <label><input type="checkbox" name="important" value="same_age"> Одинаковый возраст</label>
+                <label>
+                    <input type="checkbox" name="important" value="same_age"
+                    {% if "same_age" in selected_important %}checked{% endif %}>
+                    Одинаковый возраст
+                </label>
 
             </div>
 
@@ -180,12 +371,16 @@
             Сохранить профиль
         </button>
 
-    </div>
+    </form>
 
+    <!-- Выход из аккаунта -->
     <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit" class="logout-button">
             Выйти из аккаунта
         </button>
     </form>
+
+</div>
+
 {% endblock %}

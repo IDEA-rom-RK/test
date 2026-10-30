@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth.decorators import login_required
+from .models import Profile
 
 
 def base(request):
@@ -42,6 +43,45 @@ def login_view(request):
 
 
 
+
 @login_required(login_url="log")
 def profile_view(request):
-    return render(request, "profile.html")
+    profile, created = Profile.objects.get_or_create(
+        user=request.user
+    )
+
+    if request.method == "POST":
+        profile.description = request.POST.get(
+            "description", ""
+        ).strip()
+
+        profile.other_interests = request.POST.get(
+            "other_interests", ""
+        ).strip()
+
+        profile.interests = {
+            "selected": request.POST.getlist("interests")
+        }
+
+        profile.search_goals = request.POST.getlist(
+            "search_goals"
+        )
+
+        profile.important = request.POST.getlist(
+            "important"
+        )
+
+        profile.save()
+
+        return redirect("profile")
+
+    selected_interests = profile.interests.get(
+        "selected", []
+    )
+
+    return render(request, "profile.html", {
+        "profile": profile,
+        "selected_interests": selected_interests,
+        "selected_goals": profile.search_goals,
+        "selected_important": profile.important,
+    })

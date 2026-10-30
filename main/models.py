@@ -16,7 +16,7 @@ class Profile(models.Model):
     )
 
     description = models.TextField(blank=True)
-
+    other_interests = models.TextField(blank=True)
     interests = models.JSONField(default=dict, blank=True)
     search_goals = models.JSONField(default=list, blank=True)
     important = models.JSONField(default=list, blank=True)
