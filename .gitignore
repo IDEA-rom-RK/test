@@ -1,0 +1,14 @@
+# Переменные окружения
+.env
+.env.*
+
+# Виртуальное окружение
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Django
+db.sqlite3
+media/

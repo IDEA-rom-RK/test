@@ -7,45 +7,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{% block title %}OkItIsIDEA{% endblock %}</title>
+    <title>{% block title %}InterSphere{% endblock %}</title>
 
     <link rel="stylesheet" href="{% static 'CSS/style.css' %}">
-</head>
-
+    <script src="{% static 'CSS/menu.js' %}" defer></script>
 <body>
 
     <header class="site-header">
 
-        <a class="logo" href="{% url 'HBase' %}">
-            OkItIsIDEA
-        </a>
+        <div class="header-left">
 
-        <nav>
-            <a href="{% url 'HBase' %}">Главная</a>
+            <button class="menu-toggle"
+                    id="menu-toggle"
+                    type="button"
+                    aria-label="Открыть меню"
+                    aria-expanded="false"
+                    aria-controls="site-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
 
             {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}" class="profile-button">
+                <a href="{% url 'profile' %}" class="profile-button" aria-label="Мой профиль">
+                    {% if header_avatar_url %}
+                        <img src="{{ header_avatar_url }}" alt="Аватар пользователя">
+                    {% else %}
+                        <span class="person-icon">
+                            <span class="person-head"></span>
+                            <span class="person-body"></span>
+                        </span>
+                    {% endif %}
+                </a>
             {% else %}
-                <a href="{% url 'log' %}" class="profile-button">
+                <a href="{% url 'log' %}" class="profile-button" aria-label="Войти">
+                    <span class="person-icon">
+                        <span class="person-head"></span>
+                        <span class="person-body"></span>
+                    </span>
+                </a>
             {% endif %}
 
-                <span class="person-icon">
-                    <span class="person-head"></span>
-                    <span class="person-body"></span>
-                </span>
+        </div>
 
-            </a>
-        </nav>
+        <a class="logo" href="{% url 'HBase' %}">
+            <span class="logo-orb"></span>
+            <span>InterSphere</span>
+        </a>
 
     </header>
+
+
+    <nav class="site-menu" id="site-menu" aria-label="Основная навигация" hidden>
+
+        <a href="{% url 'HBase' %}" class="menu-link">
+            <span class="menu-icon">⌂</span>
+            Главная
+        </a>
+
+        {% if user.is_authenticated %}
+
+            <a href="{% url 'profile' %}" class="menu-link">
+                <span class="menu-icon">♙</span>
+                Мой профиль
+            </a>
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="menu-link menu-logout">
+                    <span class="menu-icon">↪</span>
+                    Выйти из аккаунта
+                </button>
+            </form>
+
+        {% else %}
+
+            <a href="{% url 'log' %}" class="menu-link">
+                <span class="menu-icon">↪</span>
+                Войти
+            </a>
+
+            <a href="{% url 'Register' %}" class="menu-link">
+                <span class="menu-icon">＋</span>
+                Регистрация
+            </a>
+
+        {% endif %}
+
+    </nav>
+
 
     <main class="container">
         {% block content %}
         {% endblock %}
     </main>
 
+
     <footer class="site-footer">
-        <p>OkItIsIDEA © 2026</p>
+        <p>InterSphere © 2026</p>
     </footer>
 
 </body>

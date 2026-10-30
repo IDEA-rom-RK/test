@@ -4,6 +4,8 @@ from django.contrib.auth import login
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
+from django.contrib import messages
+from .storage import upload_avatar, get_avatar_url
 
 
 def base(request):
@@ -44,6 +46,7 @@ def login_view(request):
 
 
 
+
 @login_required(login_url="log")
 def profile_view(request):
     profile, created = Profile.objects.get_or_create(
@@ -71,7 +74,28 @@ def profile_view(request):
             "important"
         )
 
+        # Загружаем новый аватар, если пользователь выбрал файл
+        avatar_file = request.FILES.get("avatar")
+
+        if avatar_file:
+            try:
+                profile.avatar = upload_avatar(
+                    avatar_file,
+                    request.user.id
+                )
+            except ValueError as error:
+                messages.error(request, str(error))
+                return redirect("profile")
+            except Exception:
+                messages.error(
+                    request,
+                    "Не удалось загрузить изображение. Попробуйте позже."
+                )
+                return redirect("profile")
+
         profile.save()
+
+        messages.success(request, "Профиль успешно сохранён!")
 
         return redirect("profile")
 
@@ -79,9 +103,21 @@ def profile_view(request):
         "selected", []
     )
 
+    avatar_url = None
+
+    if profile.avatar:
+        try:
+            avatar_url = get_avatar_url(profile.avatar)
+        except Exception:
+            messages.error(
+                request,
+                "Не удалось загрузить отображение аватара."
+            )
+
     return render(request, "profile.html", {
         "profile": profile,
         "selected_interests": selected_interests,
         "selected_goals": profile.search_goals,
         "selected_important": profile.important,
+        "avatar_url": avatar_url,
     })

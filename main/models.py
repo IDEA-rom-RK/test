@@ -9,12 +9,8 @@ class Profile(models.Model):
         related_name="profile"
     )
 
-    avatar = models.ImageField(
-        upload_to="avatars/",
-        blank=True,
-        null=True
-    )
-
+    avatar = models.CharField(max_length=500, blank=True, null=True)
+    
     description = models.TextField(blank=True)
     other_interests = models.TextField(blank=True)
     interests = models.JSONField(default=dict, blank=True)

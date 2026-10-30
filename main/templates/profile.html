@@ -9,13 +9,18 @@
 
     <h1>Мой профиль</h1>
 
-    <form method="post" action="{% url 'profile' %}">
+    <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
         {% csrf_token %}
 
         <!-- Основная информация -->
         <section class="profile-header">
 
             <div class="avatar-container">
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="profile-message">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
                 <label for="avatar-input" class="avatar">
 
                     <div class="default-avatar">
