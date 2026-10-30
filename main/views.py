@@ -6,6 +6,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile
 from django.contrib import messages
 from .storage import upload_avatar, get_avatar_url
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_GET
 
 
 def base(request):
@@ -121,3 +125,30 @@ def profile_view(request):
         "selected_important": profile.important,
         "avatar_url": avatar_url,
     })
+
+
+@login_required
+@require_GET
+def search_users(request):
+    query = request.GET.get("q", "").strip()
+
+    if len(query) < 2:
+        return JsonResponse({"users": []})
+
+    users = User.objects.filter(
+        username__icontains=query
+    ).exclude(
+        id=request.user.id
+    )[:10]
+
+    results = [
+        {
+            "username": user.username,
+        }
+        for user in users
+    ]
+
+    return JsonResponse({"users": results})
+
+def search_page(request):
+    return render(request, "searching.html")

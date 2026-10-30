@@ -1,0 +1,52 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_js %}
+<script src="{% static 'CSS/javascript.js' %}" defer></script>
+{% endblock %}
+
+{% block title %}Поиск — InterSphere{% endblock %}
+
+{% block content %}
+<section class="search-page">
+
+    <div class="search-heading">
+        <h1>Поиск пользователей</h1>
+        <p>Найди людей по их никнейму</p>
+    </div>
+
+    <div class="user-search">
+        <label for="user-search-input">Никнейм пользователя</label>
+
+        <div class="search-input-wrapper">
+            <span class="search-icon">⌕</span>
+
+            <input
+                type="search"
+                id="user-search-input"
+                placeholder="Например, alexander..."
+                autocomplete="off"
+                aria-label="Поиск пользователей по никнейму"
+                aria-controls="search-results"
+                aria-expanded="false"
+            >
+
+            <span class="search-spinner" id="search-spinner" hidden></span>
+        </div>
+
+        <div
+            class="search-results"
+            id="search-results"
+            role="listbox"
+            aria-label="Найденные пользователи"
+            hidden
+        ></div>
+
+        <p class="search-hint">
+            Введи не менее двух символов
+        </p>
+    </div>
+
+</section>
+{% endblock %}
