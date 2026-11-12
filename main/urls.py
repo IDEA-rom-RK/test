@@ -11,4 +11,5 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(next_page="HBase"), name="logout"),
     path("search-users/", views.search_users, name="search_users"),
     path("search/", views.search_page, name="search"),
+    path("userprofile/<str:username>/", views.anthrprofile_view, name="userprofile"),
 ]

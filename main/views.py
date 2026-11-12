@@ -1,5 +1,5 @@
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from .forms import RegisterForm, LoginForm
 from django.contrib.auth.decorators import login_required
@@ -152,3 +152,13 @@ def search_users(request):
 
 def search_page(request):
     return render(request, "searching.html")
+
+def anthrprofile_view(request, username):
+    user = get_object_or_404(User, username=username)
+
+    profile = Profile.objects.filter(user=user).first()
+
+    return render(request, "userprofile.html", {
+        "profile": profile,
+        "profile_user": user
+    })

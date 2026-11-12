@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 class RegisterForm(UserCreationForm):
     username = forms.CharField(
         label="Логин",
+        min_length=4,
         max_length=150,
         help_text="Придумайте уникальный логин.",
         error_messages={

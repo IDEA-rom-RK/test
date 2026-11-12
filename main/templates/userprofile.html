@@ -1,0 +1,152 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Профиль {{ profile_user.username }} — InterSphere
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-container">
+
+    <!-- Шапка профиля -->
+    <div class="profile-header">
+
+        <div class="profile-info">
+            <h1>{{ profile_user.username }}</h1>
+
+            {% if profile and profile.description %}
+                <p>{{ profile.description }}</p>
+            {% else %}
+                <p>Пользователь пока ничего о себе не рассказал.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+
+    {% if profile %}
+
+        <!-- Интересы -->
+        <section class="profile-section">
+
+            <h2>Интересы</h2>
+
+            {% if profile.interests.selected %}
+
+                <div class="choice-list">
+
+                    {% for item in profile.interests.selected %}
+
+                        {% if item == "game_shooter" %}
+                            <span>Шутеры</span>
+                        {% elif item == "game_rpg" %}
+                            <span>RPG</span>
+                        {% elif item == "book_classic" %}
+                            <span>Классическая литература</span>
+                        {% elif item == "book_romance" %}
+                            <span>Романтика</span>
+                        {% elif item == "film_comedy" %}
+                            <span>Комедии</span>
+                        {% elif item == "film_horror" %}
+                            <span>Ужасы</span>
+                        {% elif item == "music_rock" %}
+                            <span>Рок</span>
+                        {% elif item == "music_classical" %}
+                            <span>Классическая музыка</span>
+                        {% elif item == "sport_football" %}
+                            <span>Футбол</span>
+                        {% elif item == "sport_basketball" %}
+                            <span>Баскетбол</span>
+                        {% elif item == "sport_other" %}
+                            <span>Другие виды спорта</span>
+                        {% elif item == "creative_writing" %}
+                            <span>Литературное творчество</span>
+                        {% else %}
+                            <span>{{ item }}</span>
+                        {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+                <p>Пользователь пока не указал интересы.</p>
+            {% endif %}
+
+            {% if profile.other_interests %}
+                <h3>Другие интересы</h3>
+                <p>{{ profile.other_interests }}</p>
+            {% endif %}
+
+        </section>
+
+
+        <!-- Цели поиска -->
+        <section class="profile-section">
+
+            <h2>Цели поиска</h2>
+
+            {% if profile.search_goals %}
+
+                <div class="choice-list">
+
+                    {% for goal in profile.search_goals %}
+
+                        {% if goal == "gaming" %}
+                            <span>Совместные игры</span>
+                        {% elif goal == "similar_interests" %}
+                            <span>Люди со схожими интересами</span>
+                        {% else %}
+                            <span>{{ goal }}</span>
+                        {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+                <p>Пользователь пока не указал цели поиска.</p>
+            {% endif %}
+
+        </section>
+
+
+        <!-- Предпочтения в общении -->
+        <section class="profile-section">
+
+            <h2>Что важно в общении</h2>
+
+            {% if profile.important %}
+
+                <div class="choice-list">
+
+                    {% for item in profile.important %}
+
+                        {% if item == "common_hobbies" %}
+                            <span>Общие увлечения</span>
+                        {% elif item == "same_age" %}
+                            <span>Примерно одинаковый возраст</span>
+                        {% else %}
+                            <span>{{ item }}</span>
+                        {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+                <p>Пользователь пока не указал предпочтения.</p>
+            {% endif %}
+
+        </section>
+
+    {% else %}
+
+        <p>Пользователь пока не заполнил профиль.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

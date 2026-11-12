@@ -66,6 +66,11 @@
             Главная
         </a>
 
+        <a href="{% url 'search' %}" class="menu-link">
+            <span class="menu-icon">⌕</span>
+            Поиск пользователей
+        </a>
+
         {% if user.is_authenticated %}
 
             <a href="{% url 'profile' %}" class="menu-link">
