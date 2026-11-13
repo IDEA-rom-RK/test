@@ -1,74 +1,71 @@
 
-(() => {
-    console.log("JAVASCRIPT.JS ЗАПУЩЕН");
-    document.addEventListener("DOMContentLoaded", () => {
-
-        // ВЫПАДАЮЩЕЕ МЕНЮ
-
-        const menuToggle = document.querySelector("#menu-toggle");
-        const siteMenu = document.querySelector("#site-menu");
-
-        if (menuToggle && siteMenu) {
-            menuToggle.addEventListener("click", () => {
-                const isOpen = !siteMenu.hidden;
-
-                siteMenu.hidden = isOpen;
-                menuToggle.classList.toggle("active", !isOpen);
-                menuToggle.setAttribute("aria-expanded", String(!isOpen));
-            });
-
-            document.addEventListener("click", (event) => {
-                if (
-                    !siteMenu.hidden &&
-                    !siteMenu.contains(event.target) &&
-                    !menuToggle.contains(event.target)
-                ) {
-                    siteMenu.hidden = true;
-                    menuToggle.classList.remove("active");
-                    menuToggle.setAttribute("aria-expanded", "false");
-                }
-            });
-
-            document.addEventListener("keydown", (event) => {
-                if (event.key === "Escape") {
-                    siteMenu.hidden = true;
-                    menuToggle.classList.remove("active");
-                    menuToggle.setAttribute("aria-expanded", "false");
-                }
-            });
-        }
-
-        // СЛАЙДЕР
-
-        const slides = document.querySelectorAll(".slide");
-        const prevButton = document.querySelector(".prev");
-        const nextButton = document.querySelector(".next");
-
-        if (slides.length > 0 && prevButton && nextButton) {
-            let currentSlide = 0;
-
-            function showSlide(index) {
-                slides[currentSlide].classList.remove("active");
-
-                currentSlide = (index + slides.length) % slides.length;
-
-                slides[currentSlide].classList.add("active");
-            }
-
-            prevButton.addEventListener("click", () => {
-                showSlide(currentSlide - 1);
-            });
-
-            nextButton.addEventListener("click", () => {
-                showSlide(currentSlide + 1);
-            });
-        }
-
-    });
-})();
-
-
 document.addEventListener("DOMContentLoaded", () => {
+
+    // ВЫПАДАЮЩЕЕ МЕНЮ
+
+    const menuToggle = document.querySelector("#menu-toggle");
+    const siteMenu = document.querySelector("#site-menu");
+
+    if (menuToggle && siteMenu) {
+        menuToggle.addEventListener("click", () => {
+            const isOpen = !siteMenu.hidden;
+
+            siteMenu.hidden = isOpen;
+            menuToggle.classList.toggle("active", !isOpen);
+            menuToggle.setAttribute("aria-expanded", String(!isOpen));
+        });
+
+        document.addEventListener("click", event => {
+            if (
+                !siteMenu.hidden &&
+                !siteMenu.contains(event.target) &&
+                !menuToggle.contains(event.target)
+            ) {
+                siteMenu.hidden = true;
+                menuToggle.classList.remove("active");
+                menuToggle.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape") {
+                siteMenu.hidden = true;
+                menuToggle.classList.remove("active");
+                menuToggle.setAttribute("aria-expanded", "false");
+            }
+        });
+    }
+
+
+    // СЛАЙДЕР
+
+    const slides = document.querySelectorAll(".slide");
+    const prevButton = document.querySelector(".prev");
+    const nextButton = document.querySelector(".next");
+
+    if (slides.length > 0 && prevButton && nextButton) {
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides[currentSlide].classList.remove("active");
+
+            currentSlide = (index + slides.length) % slides.length;
+
+            slides[currentSlide].classList.add("active");
+        }
+
+        prevButton.addEventListener("click", () => {
+            showSlide(currentSlide - 1);
+        });
+
+        nextButton.addEventListener("click", () => {
+            showSlide(currentSlide + 1);
+        });
+    }
+
+
+    // ПОИСК ПОЛЬЗОВАТЕЛЕЙ
+
     const searchInput = document.querySelector("#user-search-input");
     const resultsContainer = document.querySelector("#search-results");
     const spinner = document.querySelector("#search-spinner");
@@ -110,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const link = document.createElement("a");
 
             link.className = "search-result";
-            link.href = `/profile/${encodeURIComponent(user.username)}/`;
+            link.href = `/userprofile/${encodeURIComponent(user.username)}/`;
             link.setAttribute("role", "option");
 
             const avatar = document.createElement("span");
@@ -137,8 +134,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         requestController = new AbortController();
+        const controller = requestController;
 
-        spinner.hidden = false;
+        if (spinner) spinner.hidden = false;
 
         try {
             const response = await fetch(
@@ -148,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     headers: {
                         "X-Requested-With": "XMLHttpRequest"
                     },
-                    signal: requestController.signal
+                    signal: controller.signal
                 }
             );
 
@@ -165,8 +163,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error(error);
             }
         } finally {
-            if (!requestController.signal.aborted) {
-                spinner.hidden = true;
+            if (requestController === controller) {
+                requestController = null;
+                if (spinner) spinner.hidden = true;
             }
         }
     }
@@ -181,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
             requestController = null;
         }
 
-        spinner.hidden = true;
+        if (spinner) spinner.hidden = true;
 
         if (query.length < 2) {
             closeResults();
@@ -208,4 +207,5 @@ document.addEventListener("DOMContentLoaded", () => {
             searchInput.blur();
         }
     });
+
 });

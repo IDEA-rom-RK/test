@@ -1,16 +1,29 @@
 
 {% extends "base.html" %}
 
-{% block title %}
-    Профиль {{ profile_user.username }} — InterSphere
-{% endblock %}
+{% block title %}Профиль {{ profile_user.username }} — InterSphere{% endblock %}
 
 {% block content %}
 
 <div class="profile-container">
 
-    <!-- Шапка профиля -->
-    <div class="profile-header">
+    <!-- Основная информация -->
+    <section class="profile-header profile-card">
+
+        <div class="avatar-container">
+            <div class="avatar profile-avatar-view">
+
+                {% if avatar_url %}
+                    <img src="{{ avatar_url }}" alt="Аватар {{ profile_user.username }}">
+                {% else %}
+                    <div class="default-avatar">
+                        <div class="avatar-head"></div>
+                        <div class="avatar-body"></div>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
 
         <div class="profile-info">
             <h1>{{ profile_user.username }}</h1>
@@ -18,132 +31,188 @@
             {% if profile and profile.description %}
                 <p>{{ profile.description }}</p>
             {% else %}
-                <p>Пользователь пока ничего о себе не рассказал.</p>
+                <p class="profile-muted">Пользователь пока ничего о себе не рассказал.</p>
             {% endif %}
         </div>
 
-    </div>
+    </section>
 
 
     {% if profile %}
 
+        {% with interests=profile.interests.selected %}
+
         <!-- Интересы -->
         <section class="profile-section">
 
-            <h2>Интересы</h2>
+            <div class="profile-section-heading">
+                <h2>Интересы</h2>
+            </div>
 
-            {% if profile.interests.selected %}
+            <div class="profile-display-grid">
 
-                <div class="choice-list">
+                {% if "game_shooter" in interests or "game_strategy" in interests or "game_rpg" in interests or "game_survival" in interests or "game_simulator" in interests or "game_sandbox" in interests %}
+                    <div class="profile-display-card">
+                        <h3>🎮 Игры</h3>
+                        <div class="profile-tags">
+                            {% if "game_shooter" in interests %}<span>Шутеры</span>{% endif %}
+                            {% if "game_strategy" in interests %}<span>Стратегии</span>{% endif %}
+                            {% if "game_rpg" in interests %}<span>RPG</span>{% endif %}
+                            {% if "game_survival" in interests %}<span>Выживание</span>{% endif %}
+                            {% if "game_simulator" in interests %}<span>Симуляторы</span>{% endif %}
+                            {% if "game_sandbox" in interests %}<span>Песочницы</span>{% endif %}
+                        </div>
+                    </div>
+                {% endif %}
 
-                    {% for item in profile.interests.selected %}
+                {% if "book_fantasy" in interests or "book_detective" in interests or "book_classic" in interests or "book_romance" in interests or "book_history" in interests %}
+                    <div class="profile-display-card">
+                        <h3>📚 Книги</h3>
+                        <div class="profile-tags">
+                            {% if "book_fantasy" in interests %}<span>Фантастика</span>{% endif %}
+                            {% if "book_detective" in interests %}<span>Детективы</span>{% endif %}
+                            {% if "book_classic" in interests %}<span>Классика</span>{% endif %}
+                            {% if "book_romance" in interests %}<span>Романтика</span>{% endif %}
+                            {% if "book_history" in interests %}<span>Исторические</span>{% endif %}
+                        </div>
+                    </div>
+                {% endif %}
 
-                        {% if item == "game_shooter" %}
-                            <span>Шутеры</span>
-                        {% elif item == "game_rpg" %}
-                            <span>RPG</span>
-                        {% elif item == "book_classic" %}
-                            <span>Классическая литература</span>
-                        {% elif item == "book_romance" %}
-                            <span>Романтика</span>
-                        {% elif item == "film_comedy" %}
-                            <span>Комедии</span>
-                        {% elif item == "film_horror" %}
-                            <span>Ужасы</span>
-                        {% elif item == "music_rock" %}
-                            <span>Рок</span>
-                        {% elif item == "music_classical" %}
-                            <span>Классическая музыка</span>
-                        {% elif item == "sport_football" %}
-                            <span>Футбол</span>
-                        {% elif item == "sport_basketball" %}
-                            <span>Баскетбол</span>
-                        {% elif item == "sport_other" %}
-                            <span>Другие виды спорта</span>
-                        {% elif item == "creative_writing" %}
-                            <span>Литературное творчество</span>
-                        {% else %}
-                            <span>{{ item }}</span>
-                        {% endif %}
+                {% if "film_action" in interests or "film_comedy" in interests or "film_drama" in interests or "film_horror" in interests or "film_scifi" in interests %}
+                    <div class="profile-display-card">
+                        <h3>🎬 Фильмы и сериалы</h3>
+                        <div class="profile-tags">
+                            {% if "film_action" in interests %}<span>Боевики</span>{% endif %}
+                            {% if "film_comedy" in interests %}<span>Комедии</span>{% endif %}
+                            {% if "film_drama" in interests %}<span>Драмы</span>{% endif %}
+                            {% if "film_horror" in interests %}<span>Ужасы</span>{% endif %}
+                            {% if "film_scifi" in interests %}<span>Фантастика</span>{% endif %}
+                        </div>
+                    </div>
+                {% endif %}
 
-                    {% endfor %}
+                {% if "music_rock" in interests or "music_pop" in interests or "music_metal" in interests or "music_classical" in interests or "music_electronic" in interests %}
+                    <div class="profile-display-card">
+                        <h3>🎵 Музыка</h3>
+                        <div class="profile-tags">
+                            {% if "music_rock" in interests %}<span>Рок</span>{% endif %}
+                            {% if "music_pop" in interests %}<span>Поп</span>{% endif %}
+                            {% if "music_metal" in interests %}<span>Метал</span>{% endif %}
+                            {% if "music_classical" in interests %}<span>Классическая</span>{% endif %}
+                            {% if "music_electronic" in interests %}<span>Электронная</span>{% endif %}
+                        </div>
+                    </div>
+                {% endif %}
 
+                {% if "sport_football" in interests or "sport_basketball" in interests or "sport_swimming" in interests or "sport_running" in interests or "sport_other" in interests %}
+                    <div class="profile-display-card">
+                        <h3>⚽ Спорт</h3>
+                        <div class="profile-tags">
+                            {% if "sport_football" in interests %}<span>Футбол</span>{% endif %}
+                            {% if "sport_basketball" in interests %}<span>Баскетбол</span>{% endif %}
+                            {% if "sport_swimming" in interests %}<span>Плавание</span>{% endif %}
+                            {% if "sport_running" in interests %}<span>Бег</span>{% endif %}
+                            {% if "sport_other" in interests %}<span>Другие виды спорта</span>{% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if "creative_drawing" in interests or "creative_animation" in interests or "creative_music" in interests or "creative_writing" in interests or "creative_video" in interests %}
+                    <div class="profile-display-card">
+                        <h3>🎨 Творчество</h3>
+                        <div class="profile-tags">
+                            {% if "creative_drawing" in interests %}<span>Рисование</span>{% endif %}
+                            {% if "creative_animation" in interests %}<span>Анимация</span>{% endif %}
+                            {% if "creative_music" in interests %}<span>Музыка</span>{% endif %}
+                            {% if "creative_writing" in interests %}<span>Писательство</span>{% endif %}
+                            {% if "creative_video" in interests %}<span>Видеомонтаж</span>{% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if profile.other_interests %}
+                    <div class="profile-display-card">
+                        <h3>✦ Другие интересы</h3>
+                        <p class="profile-card-text">{{ profile.other_interests }}</p>
+                    </div>
+                {% endif %}
+
+            </div>
+
+            {% if not interests and not profile.other_interests %}
+                <div class="profile-card profile-empty-card">
+                    Пользователь пока не указал интересы.
                 </div>
-
-            {% else %}
-                <p>Пользователь пока не указал интересы.</p>
-            {% endif %}
-
-            {% if profile.other_interests %}
-                <h3>Другие интересы</h3>
-                <p>{{ profile.other_interests }}</p>
             {% endif %}
 
         </section>
 
+        {% endwith %}
 
-        <!-- Цели поиска -->
-        <section class="profile-section">
 
-            <h2>Цели поиска</h2>
+        <!-- Нижние блоки -->
+        <div class="profile-bottom-grid">
 
-            {% if profile.search_goals %}
-
-                <div class="choice-list">
-
-                    {% for goal in profile.search_goals %}
-
-                        {% if goal == "gaming" %}
-                            <span>Совместные игры</span>
-                        {% elif goal == "similar_interests" %}
-                            <span>Люди со схожими интересами</span>
-                        {% else %}
-                            <span>{{ goal }}</span>
-                        {% endif %}
-
-                    {% endfor %}
-
+            <section class="profile-section profile-bottom-card">
+                <div class="profile-section-heading">
+                    <h2>Кого ищет</h2>
                 </div>
 
-            {% else %}
-                <p>Пользователь пока не указал цели поиска.</p>
-            {% endif %}
+                {% if profile.search_goals %}
+                    <div class="profile-tags">
+                        {% for goal in profile.search_goals %}
+                            {% if goal == "gaming" %}
+                                <span>🎮 Совместная игра</span>
+                            {% elif goal == "books" %}
+                                <span>📚 Обсуждение книг</span>
+                            {% elif goal == "movies" %}
+                                <span>🎬 Обсуждение кино и сериалов</span>
+                            {% elif goal == "creativity" %}
+                                <span>🎨 Совместное творчество</span>
+                            {% elif goal == "communication" %}
+                                <span>💬 Простое общение</span>
+                            {% elif goal == "similar_interests" %}
+                                <span>✦ Люди с похожими интересами</span>
+                            {% else %}
+                                <span>{{ goal }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="profile-empty">Пользователь пока не указал цели поиска.</p>
+                {% endif %}
+            </section>
 
-        </section>
 
-
-        <!-- Предпочтения в общении -->
-        <section class="profile-section">
-
-            <h2>Что важно в общении</h2>
-
-            {% if profile.important %}
-
-                <div class="choice-list">
-
-                    {% for item in profile.important %}
-
-                        {% if item == "common_hobbies" %}
-                            <span>Общие увлечения</span>
-                        {% elif item == "same_age" %}
-                            <span>Примерно одинаковый возраст</span>
-                        {% else %}
-                            <span>{{ item }}</span>
-                        {% endif %}
-
-                    {% endfor %}
-
+            <section class="profile-section profile-bottom-card">
+                <div class="profile-section-heading">
+                    <h2>Что важно в общении</h2>
                 </div>
 
-            {% else %}
-                <p>Пользователь пока не указал предпочтения.</p>
-            {% endif %}
+                {% if profile.important %}
+                    <div class="profile-tags">
+                        {% for item in profile.important %}
+                            {% if item == "common_hobbies" %}
+                                <span>Общие увлечения</span>
+                            {% elif item == "same_age" %}
+                                <span>Примерно одинаковый возраст</span>
+                            {% else %}
+                                <span>{{ item }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="profile-empty">Пользователь пока не указал предпочтения.</p>
+                {% endif %}
+            </section>
 
-        </section>
+        </div>
 
     {% else %}
 
-        <p>Пользователь пока не заполнил профиль.</p>
+        <div class="profile-card profile-empty-card">
+            <p>Пользователь пока не заполнил профиль.</p>
+        </div>
 
     {% endif %}
 

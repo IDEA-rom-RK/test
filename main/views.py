@@ -153,12 +153,21 @@ def search_users(request):
 def search_page(request):
     return render(request, "searching.html")
 
+
 def anthrprofile_view(request, username):
     user = get_object_or_404(User, username=username)
-
     profile = Profile.objects.filter(user=user).first()
+
+    avatar_url = None
+
+    if profile and profile.avatar:
+        try:
+            avatar_url = get_avatar_url(profile.avatar)
+        except Exception:
+            avatar_url = None
 
     return render(request, "userprofile.html", {
         "profile": profile,
-        "profile_user": user
+        "profile_user": user,
+        "avatar_url": avatar_url,
     })
