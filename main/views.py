@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET
+from django.db.models import Q
 
 
 def base(request):
@@ -127,28 +128,80 @@ def profile_view(request):
     })
 
 
+
 @login_required
 @require_GET
 def search_users(request):
     query = request.GET.get("q", "").strip()
+    selected_interests = request.GET.getlist("interests")
 
-    if len(query) < 2:
-        return JsonResponse({"users": []})
+    allowed_interests = {
+        "game_shooter", "game_strategy", "game_rpg",
+        "game_survival", "game_simulator", "game_sandbox",
 
-    users = User.objects.filter(
-        username__icontains=query
-    ).exclude(
-        id=request.user.id
-    )[:10]
+        "book_fantasy", "book_detective", "book_classic",
+        "book_romance", "book_history",
 
-    results = [
-        {
-            "username": user.username,
-        }
-        for user in users
+        "film_action", "film_comedy", "film_drama",
+        "film_horror", "film_scifi",
+
+        "music_rock", "music_pop", "music_metal",
+        "music_classical", "music_electronic",
+
+        "sport_football", "sport_basketball", "sport_swimming",
+        "sport_running", "sport_other",
+
+        "creative_drawing", "creative_animation",
+        "creative_music", "creative_writing", "creative_video",
+    }
+
+    selected_interests = [
+        interest for interest in selected_interests
+        if interest in allowed_interests
     ]
 
+    if not query and not selected_interests:
+        return JsonResponse({"users": []})
+
+    profiles = Profile.objects.select_related("user").exclude(
+        user=request.user
+    )
+
+    if query:
+        profiles = profiles.filter(
+            user__username__icontains=query
+        )
+
+    if selected_interests:
+        interest_filter = Q()
+
+        for interest in selected_interests:
+            interest_filter |= Q(
+                interests__selected__contains=[interest]
+            )
+
+        profiles = profiles.filter(interest_filter)
+
+    profiles = profiles.order_by("user__username")[:10]
+
+    results = []
+
+    for profile in profiles:
+        user_interests = profile.interests.get("selected", [])
+
+        # Считаем совпадения с интересами текущего пользователя,
+        # выбранными в поиске.
+        common_count = len(
+            set(selected_interests) & set(user_interests)
+        )
+
+        results.append({
+            "username": profile.user.username,
+            "common_interests_count": common_count,
+        })
+
     return JsonResponse({"users": results})
+
 
 def search_page(request):
     return render(request, "searching.html")

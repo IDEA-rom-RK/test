@@ -143,3 +143,6 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+LOGIN_URL = "log"
+LOGIN_REDIRECT_URL = "HBase"
+LOGOUT_REDIRECT_URL = "HBase"

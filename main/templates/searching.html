@@ -5,14 +5,17 @@
 {% block title %}Поиск — InterSphere{% endblock %}
 
 {% block content %}
+
 <section class="search-page">
 
     <div class="search-heading">
         <h1>Поиск пользователей</h1>
-        <p>Найди людей по их никнейму</p>
+        <p>Найди людей по никнейму или общим интересам</p>
     </div>
 
+    <!-- Поиск по никнейму -->
     <div class="user-search">
+
         <label for="user-search-input">Никнейм пользователя</label>
 
         <div class="search-input-wrapper">
@@ -31,6 +34,112 @@
             <span class="search-spinner" id="search-spinner" hidden></span>
         </div>
 
+        <p class="search-hint">
+            Можно искать по любой части никнейма.
+        </p>
+
+    </div>
+
+
+    <!-- Фильтр интересов -->
+    <section class="search-filters">
+
+        <div class="search-filter-heading">
+            <div>
+                <h2>Интересы</h2>
+                <p>Выбери темы, которые должны быть интересны найденным пользователям.</p>
+            </div>
+
+            <button type="button" id="clear-search-filters" class="clear-search-filters">
+                Сбросить
+            </button>
+        </div>
+
+
+        <div class="search-filter-grid">
+
+            <details class="search-interest-category" open>
+                <summary>🎮 Игры</summary>
+                <div class="search-interest-options">
+                    <label><input type="checkbox" name="interests" value="game_shooter"> Шутеры</label>
+                    <label><input type="checkbox" name="interests" value="game_strategy"> Стратегии</label>
+                    <label><input type="checkbox" name="interests" value="game_rpg"> RPG</label>
+                    <label><input type="checkbox" name="interests" value="game_survival"> Выживание</label>
+                    <label><input type="checkbox" name="interests" value="game_simulator"> Симуляторы</label>
+                    <label><input type="checkbox" name="interests" value="game_sandbox"> Песочницы</label>
+                </div>
+            </details>
+
+
+            <details class="search-interest-category">
+                <summary>📚 Книги</summary>
+                <div class="search-interest-options">
+                    <label><input type="checkbox" name="interests" value="book_fantasy"> Фантастика</label>
+                    <label><input type="checkbox" name="interests" value="book_detective"> Детективы</label>
+                    <label><input type="checkbox" name="interests" value="book_classic"> Классика</label>
+                    <label><input type="checkbox" name="interests" value="book_romance"> Романтика</label>
+                    <label><input type="checkbox" name="interests" value="book_history"> Исторические</label>
+                </div>
+            </details>
+
+
+            <details class="search-interest-category">
+                <summary>🎬 Фильмы и сериалы</summary>
+                <div class="search-interest-options">
+                    <label><input type="checkbox" name="interests" value="film_action"> Боевики</label>
+                    <label><input type="checkbox" name="interests" value="film_comedy"> Комедии</label>
+                    <label><input type="checkbox" name="interests" value="film_drama"> Драмы</label>
+                    <label><input type="checkbox" name="interests" value="film_horror"> Ужасы</label>
+                    <label><input type="checkbox" name="interests" value="film_scifi"> Фантастика</label>
+                </div>
+            </details>
+
+
+            <details class="search-interest-category">
+                <summary>🎵 Музыка</summary>
+                <div class="search-interest-options">
+                    <label><input type="checkbox" name="interests" value="music_rock"> Рок</label>
+                    <label><input type="checkbox" name="interests" value="music_pop"> Поп</label>
+                    <label><input type="checkbox" name="interests" value="music_metal"> Метал</label>
+                    <label><input type="checkbox" name="interests" value="music_classical"> Классическая</label>
+                    <label><input type="checkbox" name="interests" value="music_electronic"> Электронная</label>
+                </div>
+            </details>
+
+
+            <details class="search-interest-category">
+                <summary>⚽ Спорт</summary>
+                <div class="search-interest-options">
+                    <label><input type="checkbox" name="interests" value="sport_football"> Футбол</label>
+                    <label><input type="checkbox" name="interests" value="sport_basketball"> Баскетбол</label>
+                    <label><input type="checkbox" name="interests" value="sport_swimming"> Плавание</label>
+                    <label><input type="checkbox" name="interests" value="sport_running"> Бег</label>
+                    <label><input type="checkbox" name="interests" value="sport_other"> Другое</label>
+                </div>
+            </details>
+
+
+            <details class="search-interest-category">
+                <summary>🎨 Творчество</summary>
+                <div class="search-interest-options">
+                    <label><input type="checkbox" name="interests" value="creative_drawing"> Рисование</label>
+                    <label><input type="checkbox" name="interests" value="creative_animation"> Анимация</label>
+                    <label><input type="checkbox" name="interests" value="creative_music"> Музыка</label>
+                    <label><input type="checkbox" name="interests" value="creative_writing"> Писательство</label>
+                    <label><input type="checkbox" name="interests" value="creative_video"> Видеомонтаж</label>
+                </div>
+            </details>
+
+        </div>
+
+    </section>
+
+
+    <!-- Результаты -->
+    <section class="search-results-section">
+
+        <h2>Результаты поиска</h2>
+
         <div
             class="search-results"
             id="search-results"
@@ -39,10 +148,12 @@
             hidden
         ></div>
 
-        <p class="search-hint">
-            Введи не менее двух символов
+        <p class="search-empty-hint" id="search-empty-hint">
+            Введи никнейм или выбери интересы, чтобы начать поиск.
         </p>
-    </div>
+
+    </section>
 
 </section>
+
 {% endblock %}
