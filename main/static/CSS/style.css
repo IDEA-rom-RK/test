@@ -928,6 +928,7 @@ select {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
+    align-items: start;
 }
 
 .interest-category {
@@ -961,6 +962,10 @@ select {
 
 .interest-category[open] summary::after {
     content: "−";
+}
+
+.interest-category:not([open]) .interest-options {
+    display: none;
 }
 
 .interest-options {
@@ -1473,4 +1478,218 @@ select {
 .search-result-common {
     color: var(--text-muted);
     font-size: 12px;
+}
+
+
+/* ========================================
+   SEARCH — НОВАЯ ДВУХКОЛОНОЧНАЯ СТРУКТУРА
+======================================== */
+
+.search-page {
+    width: 100%;
+    max-width: 1300px;
+    margin: 45px auto 60px;
+    padding: 0 20px;
+}
+.search-heading {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* Основная сетка */
+
+.search-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(420px, 460px);
+    gap: 30px;
+    align-items: start;
+}
+
+/* Центральная область */
+
+.search-main {
+    min-width: 0;
+}
+
+.user-search {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Результаты */
+
+.search-results-section {
+    width: 100%;
+    max-width: 600px;
+    margin: 45px auto 0;
+}
+
+.search-results-section .search-results {
+    position: static;
+    width: 100%;
+    max-height: 500px;
+    margin-top: 12px;
+    overflow-y: auto;
+}
+
+/* Боковая панель */
+
+.search-filters {
+    min-width: 0;
+    margin: 0;
+    padding: 18px;
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.search-filter-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.search-filter-heading h2 {
+    margin: 0 0 6px;
+    font-size: 19px;
+}
+
+.search-filter-heading p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.clear-search-filters {
+    align-self: flex-start;
+    padding: 7px 11px;
+    font-size: 12px;
+}
+
+/* Список категорий */
+
+.search-filter-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    align-items: start;
+}
+
+.search-interest-category {
+    padding: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+}
+
+.search-interest-category summary {
+    position: relative;
+    padding-right: 22px;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+}
+
+.search-interest-category summary::-webkit-details-marker {
+    display: none;
+}
+
+.search-interest-category summary::after {
+    content: "+";
+    position: absolute;
+    right: 0;
+    top: -3px;
+    color: var(--accent);
+    font-size: 19px;
+    font-weight: 400;
+}
+
+.search-interest-category[open] summary::after {
+    content: "−";
+}
+
+/* Варианты интересов */
+
+.search-interest-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.search-interest-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+
+    color: var(--text-muted);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.search-interest-options label:hover {
+    color: var(--text);
+}
+
+.search-interest-options input {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+}
+
+.search-interest-options label:has(input:checked) {
+    color: var(--text);
+}
+
+/* Адаптация */
+
+@media (max-width: 800px) {
+        .search-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .search-filters {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .search-filter-heading {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 600px) {
+    .search-page {
+        margin-top: 30px;
+        padding: 0 12px;
+    }
+
+    .search-heading {
+        margin-bottom: 28px;
+    }
+
+    .search-filters {
+        padding: 14px;
+    }
+
+    .search-filter-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .search-filter-list {
+        grid-template-columns: 1fr;
+    }
 }

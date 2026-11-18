@@ -276,20 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 scheduleSearch();
             });
         }
-
-        // Закрытие результатов при клике вне поиска
-        document.addEventListener("click", event => {
-            const filters = document.querySelector(".search-filters");
-
-            if (
-                !resultsContainer.contains(event.target) &&
-                !searchInput.contains(event.target) &&
-                (!filters || !filters.contains(event.target))
-            ) {
-                closeResults();
-            }
-        });
-
+        
         // Закрытие результатов по Escape
         searchInput.addEventListener("keydown", event => {
             if (event.key === "Escape") {
@@ -298,13 +285,5 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-
-
-    searchInput.addEventListener("keydown", event => {
-        if (event.key === "Escape") {
-            closeResults();
-            searchInput.blur();
-        }
-    });
 
 });

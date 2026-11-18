@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_GET
-from django.db.models import Q
+from django.db.models import Q, Exists, OuterRef
 
 
 def base(request):
@@ -163,15 +163,15 @@ def search_users(request):
     if not query and not selected_interests:
         return JsonResponse({"users": []})
 
-    profiles = Profile.objects.select_related("user").exclude(
-        user=request.user
-    )
+    # Начинаем поиск со всех зарегистрированных пользователей.
+    users = User.objects.exclude(pk=request.user.pk)
 
+    # Фильтр по никнейму.
     if query:
-        profiles = profiles.filter(
-            user__username__icontains=query
-        )
+        users = users.filter(username__icontains=query)
 
+    # Если выбраны интересы, оставляем только пользователей,
+    # у которых существует профиль с совпадающими интересами.
     if selected_interests:
         interest_filter = Q()
 
@@ -180,23 +180,44 @@ def search_users(request):
                 interests__selected__contains=[interest]
             )
 
-        profiles = profiles.filter(interest_filter)
+        matching_profiles = Profile.objects.filter(
+            interest_filter,
+            user_id=OuterRef("pk")
+        )
 
-    profiles = profiles.order_by("user__username")[:10]
+        users = users.annotate(
+            has_matching_interests=Exists(matching_profiles)
+        ).filter(has_matching_interests=True)
+
+    # Получаем максимум 10 пользователей.
+    users = list(users.order_by("username")[:10])
+
+    # Загружаем профили найденных пользователей.
+    profiles = Profile.objects.filter(
+        user_id__in=[user.id for user in users]
+    )
+
+    profiles_by_user = {
+        profile.user_id: profile
+        for profile in profiles
+    }
 
     results = []
 
-    for profile in profiles:
-        user_interests = profile.interests.get("selected", [])
+    for user in users:
+        profile = profiles_by_user.get(user.id)
 
-        # Считаем совпадения с интересами текущего пользователя,
-        # выбранными в поиске.
+        user_interests = (
+            (profile.interests or {}).get("selected", [])
+            if profile else []
+        )
+
         common_count = len(
             set(selected_interests) & set(user_interests)
         )
 
         results.append({
-            "username": profile.user.username,
+            "username": user.username,
             "common_interests_count": common_count,
         })
 
