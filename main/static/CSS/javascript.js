@@ -116,6 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
             searchInput.setAttribute("aria-expanded", "true");
         }
 
+        
         function showUsers(users) {
             resultsContainer.innerHTML = "";
 
@@ -131,10 +132,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 link.href = `/userprofile/${encodeURIComponent(user.username)}/`;
                 link.setAttribute("role", "option");
 
+                // АВАТАРКА
                 const avatar = document.createElement("span");
                 avatar.className = "search-result-avatar";
-                avatar.textContent = user.username.charAt(0).toUpperCase();
 
+                if (user.avatar_url) {
+                    const image = document.createElement("img");
+
+                    image.src = user.avatar_url;
+                    image.alt = `Аватар ${user.username}`;
+
+                    // Если изображение не загрузилось — показываем первую букву
+                    image.addEventListener("error", () => {
+                        avatar.innerHTML = "";
+                        avatar.textContent = user.username.charAt(0).toUpperCase();
+                    }, { once: true });
+
+                    avatar.appendChild(image);
+                } else {
+                    avatar.textContent = user.username.charAt(0).toUpperCase();
+                }
+
+                // ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ
                 const info = document.createElement("span");
                 info.className = "search-result-info";
 
@@ -168,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
             searchInput.setAttribute("aria-expanded", "true");
         }
 
+
         async function searchUsers() {
             const query = searchInput.value.trim();
             const interests = getSelectedInterests();
@@ -200,6 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             try {
                 console.log("URL поиска:", `/search-users/?${params.toString()}`);
+
                 const response = await fetch(
                     `/search-users/?${params.toString()}`,
                     {
@@ -238,6 +259,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
         }
+
+
 
         function scheduleSearch() {
             clearTimeout(searchTimeout);

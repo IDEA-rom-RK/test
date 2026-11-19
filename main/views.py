@@ -216,9 +216,18 @@ def search_users(request):
             set(selected_interests) & set(user_interests)
         )
 
+        avatar_url = None
+
+        if profile and profile.avatar:
+            try:
+                avatar_url = get_avatar_url(profile.avatar)
+            except Exception:
+                avatar_url = None
+
         results.append({
             "username": user.username,
             "common_interests_count": common_count,
+            "avatar_url": avatar_url,
         })
 
     return JsonResponse({"users": results})

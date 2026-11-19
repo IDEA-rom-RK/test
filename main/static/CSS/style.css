@@ -621,17 +621,37 @@ select {
     border-top: 1px solid #303636;
 }
 
+
 .search-result-avatar {
     display: flex;
     align-items: center;
     justify-content: center;
+
     width: 36px;
     height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    flex: 0 0 36px;
+
     border-radius: 50%;
+    overflow: hidden;
+
     background: #292D2D;
     color: #E872E2;
     font-size: 17px;
 }
+
+.search-result-avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 
 .search-result-name {
     font-size: 14px;
@@ -1018,6 +1038,15 @@ select {
     outline: none;
 }
 
+.other-interest-card {
+    margin-top: 14px;
+}
+
+.other-interest-card textarea {
+    min-height: 70px;
+    height: 70px;
+}
+
 
 /* ========================================
    ЦЕЛИ И ПРЕДПОЧТЕНИЯ
@@ -1280,14 +1309,13 @@ select {
 
 .profile-bottom-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 14px;
-    align-items: stretch;
 }
 
 .profile-bottom-card {
     min-width: 0;
-    margin-top: 35px;
+    margin-top: 20px;
     padding: 20px;
 
     background: var(--card);
@@ -1300,7 +1328,9 @@ select {
 }
 
 .profile-bottom-card .profile-choice-grid {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
 }
 
 .profile-bottom-card .profile-tags {
@@ -1324,6 +1354,11 @@ select {
     }
 }
 
+.profile-bottom-card .profile-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
 
 /* ========================================
    ПОИСК — ФИЛЬТРЫ ИНТЕРЕСОВ
@@ -1692,4 +1727,5 @@ select {
     .search-filter-list {
         grid-template-columns: 1fr;
     }
+    
 }
